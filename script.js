@@ -1,13 +1,13 @@
 // ==================== PRODUTOS MOCK ==================== 
 const products = [
-    { id: 1, name: 'Jaqueta Gelada', description: 'Jaqueta streetwear com design minimalista', price: 199.90, emoji: '🧥' },
-    { id: 2, name: 'Calça Frost', description: 'Calça com acabamento premium', price: 149.90, emoji: '👖' },
-    { id: 3, name: 'Moletom Ártico', description: 'Moletom confortável e estiloso', price: 129.90, emoji: '🧤' },
-    { id: 4, name: 'Camiseta Gelo', description: 'Camiseta de algodão 100%', price: 79.90, emoji: '👕' },
-    { id: 5, name: 'Boné Congelado', description: 'Boné com logo bordado', price: 59.90, emoji: '🧢' },
-    { id: 6, name: 'Meia Inverno', description: 'Meia térmica de qualidade', price: 39.90, emoji: '🧦' },
-    { id: 7, name: 'Luva Polar', description: 'Luva impermeável e aquecida', price: 89.90, emoji: '🧤' },
-    { id: 8, name: 'Cachecol Branco', description: 'Cachecol de lã pura', price: 99.90, emoji: '🧣' },
+    { id: 1, name: 'Jaqueta Gelada', description: 'Jaqueta streetwear com design minimalista', price: 199.90, image: 'images/Gemini_Generated_Image_ntcvsnntcvsnntcv.png' },
+    { id: 2, name: 'Calça Frost', description: 'Calça com acabamento premium', price: 149.90, image: 'images/Gemini_Generated_Image_43m23s43m23s43m2.png' },
+    { id: 3, name: 'Moletom Ártico', description: 'Moletom confortável e estiloso', price: 129.90, image: 'images/Gemini_Generated_Image_pf4tv0pf4tv0pf4t.png' },
+    { id: 4, name: 'Camiseta Gelo', description: 'Camiseta de algodão 100%', price: 79.90, image: 'images/Gemini_Generated_Image_qimngoqimngoqimn.png' },
+    { id: 5, name: 'Boné Congelado', description: 'Boné com logo bordado', price: 59.90, image: 'images/Gemini_Generated_Image_ljdzt3ljdzt3ljdz.png' },
+    { id: 6, name: 'Meia Inverno', description: 'Meia térmica de qualidade', price: 39.90, image: 'images/Gemini_Generated_Image_lh6rq3lh6rq3lh6r.png' },
+    { id: 7, name: 'Luva Polar', description: 'Luva impermeável e aquecida', price: 89.90, image: 'images/Gemini_Generated_Image_jmac9yjmac9yjmac.png' },
+    { id: 8, name: 'Cachecol Branco', description: 'Cachecol de lã pura', price: 99.90, image: 'images/Gemini_Generated_Image_is5u78is5u78is5u.png' },
 ];
 
 // ==================== CARRINHO DE COMPRAS ==================== 
@@ -30,8 +30,7 @@ function addToCart(productId, quantity) {
             id: product.id,
             name: product.name,
             price: product.price,
-            quantity: parseInt(quantity),
-            emoji: product.emoji
+            quantity: parseInt(quantity)
         });
     }
     
@@ -67,7 +66,7 @@ function updateCart() {
         cartItemsDiv.innerHTML = cart.map(item => `
             <div class="cart-item">
                 <div class="cart-item-info">
-                    <div class="cart-item-name">${item.emoji} ${item.name}</div>
+                    <div class="cart-item-name">${item.name}</div>
                     <div class="cart-item-price">R$ ${item.price.toFixed(2)}</div>
                 </div>
                 <div class="cart-item-controls">
@@ -96,7 +95,7 @@ function renderProducts() {
     const productsGrid = document.getElementById('productsGrid');
     productsGrid.innerHTML = products.map(product => `
         <div class="product-card">
-            <div class="product-image">${product.emoji}</div>
+            <div class="product-image"><img src="${product.image}" alt="${product.name}"></div>
             <div class="product-info">
                 <div class="product-name">${product.name}</div>
                 <div class="product-description">${product.description}</div>
@@ -551,19 +550,22 @@ document.getElementById('cepInput').addEventListener('input', function() {
     this.value = formatCEP(this.value);
 });
 
-document.getElementById('signupCPF').addEventListener('input', function() {
-    let value = this.value.replace(/\D/g, '');
-    if (value.length > 3) {
-        value = value.slice(0, 3) + '.' + value.slice(3);
-    }
-    if (value.length > 7) {
-        value = value.slice(0, 7) + '.' + value.slice(7);
-    }
-    if (value.length > 11) {
-        value = value.slice(0, 11) + '-' + value.slice(11, 13);
-    }
-    this.value = value;
-});
+const signupCPFElement = document.getElementById('signupCPF');
+if (signupCPFElement) {
+    signupCPFElement.addEventListener('input', function() {
+        let value = this.value.replace(/\D/g, '');
+        if (value.length > 3) {
+            value = value.slice(0, 3) + '.' + value.slice(3);
+        }
+        if (value.length > 7) {
+            value = value.slice(0, 7) + '.' + value.slice(7);
+        }
+        if (value.length > 11) {
+            value = value.slice(0, 11) + '-' + value.slice(11, 13);
+        }
+        this.value = value;
+    });
+}
 
 // ==================== INICIALIZAÇÃO ==================== 
 document.addEventListener('DOMContentLoaded', function() {
