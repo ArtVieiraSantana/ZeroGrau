@@ -5,7 +5,6 @@ if (StorageHelper.isLoggedIn()) {
 const user = StorageHelper.getSession();
 loginBtn.textContent = `Olá, ${user.nome}`;
 loginBtn.href = '#';
-// Criar menu dropdown
 loginBtn.addEventListener('click', (e) => {
 e.preventDefault();
 showUserMenu();
@@ -15,9 +14,7 @@ loginBtn.textContent = 'Login';
 loginBtn.href = 'login.html';
 }
 }
-// ========== MENU DO USUÁRIO LOGADO ==========
 function showUserMenu() {
-// Remover menu existente se houver
 const existingMenu = document.querySelector('.user-dropdown-menu');
 if (existingMenu) {
 existingMenu.remove();
@@ -25,7 +22,6 @@ return;
 }
 const user = StorageHelper.getSession();
 const loginBtn = document.querySelector('.btn-login');
-// Criar menu dropdown
 const menu = document.createElement('div');
 menu.className = 'user-dropdown-menu';
 menu.innerHTML = `
@@ -38,7 +34,6 @@ menu.innerHTML = `
 Sair da conta
 </button>
 `;
-// Adicionar estilos do menu
 const style = document.createElement('style');
 style.textContent = `
 .user-dropdown-menu {
@@ -102,13 +97,11 @@ if (!document.querySelector('style[data-user-menu]')) {
 style.setAttribute('data-user-menu', 'true');
 document.head.appendChild(style);
 }
-// Posicionar o menu
 const btnRect = loginBtn.getBoundingClientRect();
 menu.style.position = 'fixed';
 menu.style.top = btnRect.bottom + 'px';
 menu.style.right = (window.innerWidth - btnRect.right) + 'px';
 document.body.appendChild(menu);
-// Fechar ao clicar fora
 setTimeout(() => {
 document.addEventListener('click', function closeMenu(e) {
 if (!menu.contains(e.target) && e.target !== loginBtn) {
@@ -118,37 +111,23 @@ document.removeEventListener('click', closeMenu);
 });
 }, 100);
 }
-// ========== LOGOUT ==========
 function handleLogout() {
 if (confirm('Deseja realmente sair da sua conta?')) {
 StorageHelper.clearSession();
-// Notificar usuário
 showNotification('Logout realizado com sucesso!');
-// Atualizar interface
 updateAuthButton();
-// Remover menu dropdown
 const menu = document.querySelector('.user-dropdown-menu');
 if (menu) menu.remove();
-// Limpar carrinho se preferir (opcional)
-// cart = [];
-// saveCart();
-// updateCart();
 }
 }
-// ========== MODIFICAR MODAIS DE LOGIN/CADASTRO DO INDEX ==========
-// Redirecionar para as páginas separadas
 function redirectToLogin() {
 window.location.href = 'login.html';
 }
 function redirectToSignup() {
 window.location.href = 'cadastro.html';
 }
-// ========== MODIFICAR FUNÇÕES DO SCRIPT.JS ==========
-// Interceptar as funções originais de login e cadastro
 document.addEventListener('DOMContentLoaded', function() {
-// Atualizar botão de autenticação
 updateAuthButton();
-// Interceptar cliques no botão de login do header
 const loginBtn = document.querySelector('.btn-login');
 if (loginBtn && !StorageHelper.isLoggedIn()) {
 loginBtn.addEventListener('click', (e) => {
@@ -156,7 +135,6 @@ e.preventDefault();
 window.location.href = 'login.html';
 });
 }
-// Desabilitar modais antigos (se existirem)
 const oldLoginModal = document.getElementById('loginModal');
 const oldSignupModal = document.getElementById('signupModal');
 if (oldLoginModal) {
@@ -165,14 +143,11 @@ oldLoginModal.style.display = 'none';
 if (oldSignupModal) {
 oldSignupModal.style.display = 'none';
 }
-// Interceptar links de login/signup
 document.querySelectorAll('a[href="#login"]').forEach(link => {
 link.href = 'login.html';
 });
 console.log('[AUTH] Sistema de autenticação integrado');
 });
-// ========== VERIFICAR AUTENTICAÇÃO PARA CHECKOUT ==========
-// Adicionar verificação antes de ir para pagamento
 const originalGoToPayment = window.goToPayment;
 window.goToPayment = function() {
 if (!StorageHelper.isLoggedIn()) {
@@ -182,12 +157,10 @@ window.location.href = 'login.html';
 }, 1500);
 return;
 }
-// Chamar função original
 if (originalGoToPayment) {
 originalGoToPayment();
 }
 };
-// ========== PREENCHER DADOS DO USUÁRIO NO PAGAMENTO ==========
 window.addEventListener('load', function() {
 if (StorageHelper.isLoggedIn()) {
 const user = StorageHelper.getSession();

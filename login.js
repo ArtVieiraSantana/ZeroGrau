@@ -1,15 +1,9 @@
-// login.js
-// Lógica da página de login
-
-// ========== ELEMENTOS DO DOM ==========
 const loginForm = document.getElementById('loginForm');
 const emailInput = document.getElementById('email');
 const passwordInput = document.getElementById('password');
 const messageDiv = document.getElementById('message');
 
-// ========== VERIFICAÇÕES INICIAIS ==========
 window.addEventListener('DOMContentLoaded', () => {
-    // Verificar se já está logado
     if (StorageHelper.isLoggedIn()) {
         const user = StorageHelper.getSession();
         showMessage(`Você já está logado como ${user.nome}! Redirecionando...`, 'success');
@@ -19,24 +13,20 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// ========== FUNÇÃO DE MENSAGEM ==========
 function showMessage(text, type = 'error') {
     messageDiv.textContent = text;
     messageDiv.className = `message ${type}`;
     messageDiv.style.display = 'block';
-    // Auto-ocultar após 5 segundos
     setTimeout(() => {
         messageDiv.style.display = 'none';
     }, 5000);
 }
 
-// ========== SUBMIT DO FORMULÁRIO DE LOGIN ==========
 loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const email = emailInput.value.trim();
     const password = passwordInput.value;
 
-    // ===== VALIDAÇÕES BÁSICAS =====
     if (!email || !password) {
         showMessage('Por favor, preencha todos os campos', 'error');
         return;
@@ -46,23 +36,18 @@ loginForm.addEventListener('submit', async (e) => {
         return;
     }
 
-    // Desabilitar botão durante o processo
     const submitBtn = loginForm.querySelector('button[type="submit"]');
     const originalText = submitBtn.textContent;
     submitBtn.disabled = true;
     submitBtn.textContent = 'Entrando...';
 
     try {
-        // Chamada à API Mock
         const response = await API_MOCK.login(email, password);
 
         if (response.success) {
-            // Salvar sessão
             StorageHelper.setSession(response.user);
             showMessage(response.message + ' Redirecionando...', 'success');
-            // Limpar formulário
             loginForm.reset();
-            // Redirecionar para a página inicial
             setTimeout(() => {
                 window.location.href = 'index.html';
             }, 1500);
@@ -79,7 +64,6 @@ loginForm.addEventListener('submit', async (e) => {
     }
 });
 
-// ========== LÓGICA DO MODAL ESQUECI SENHA (BÁSICA) ==========
 const forgotPasswordLink = document.getElementById('forgotPassword');
 const modalForgotPassword = document.getElementById('modalForgotPassword');
 const closeModalBtn = modalForgotPassword.querySelector('.close');

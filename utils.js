@@ -1,10 +1,5 @@
-// utils.js
-// Funções utilitárias
-
-// Simula a função showNotification, necessária em auth_autentication.js e cadastro.js
 function showNotification(message, type = 'info') {
     console.log(`[Notificação - ${type.toUpperCase()}]: ${message}`);
-    // Implementação básica para demonstração
     const notificationDiv = document.createElement('div');
     notificationDiv.textContent = message;
     notificationDiv.style.cssText = `

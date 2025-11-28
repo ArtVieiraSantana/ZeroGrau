@@ -1,6 +1,3 @@
-==================== CADASTRO.JS ====================
-// Lógica da página de cadastro
-// ========== ELEMENTOS DO DOM ==========
 const cadastroForm = document.getElementById('cadastroForm');
 const nomeInput = document.getElementById('nome');
 const emailCadastroInput = document.getElementById('emailCadastro');
@@ -9,9 +6,7 @@ const passwordCadastroInput = document.getElementById('passwordCadastro');
 const confirmPasswordInput = document.getElementById('confirmPassword');
 const termsCheckbox = document.getElementById('terms');
 const messageDiv = document.getElementById('message');
-// ========== VERIFICAÇÕES INICIAIS ==========
 window.addEventListener('DOMContentLoaded', () => {
-// Verificar se já está logado
 if (StorageHelper.isLoggedIn()) {
 const user = StorageHelper.getSession();
 showMessage(`Você já está logado como ${user.nome}! Redirecionando...`, 'success');
@@ -20,22 +15,17 @@ window.location.href = 'index.html';
 }, 1500);
 }
 });
-// ========== FUNÇÃO DE MENSAGEM ==========
 function showMessage(text, type = 'error') {
 messageDiv.textContent = text;
 messageDiv.className = `message ${type}`;
 messageDiv.style.display = 'block';
-// Auto-ocultar após 5 segundos
 setTimeout(() => {
 messageDiv.style.display = 'none';
 }, 5000);
 }
-// ========== FORMATAÇÃO AUTOMÁTICA DO CPF ==========
 cpfInput.addEventListener('input', (e) => {
 e.target.value = Validator.formatCPF(e.target.value);
 });
-// ========== VALIDAÇÃO EM TEMPO REAL ==========
-// Validar confirmação de senha enquanto digita
 confirmPasswordInput.addEventListener('input', () => {
 const password = passwordCadastroInput.value;
 const confirmPassword = confirmPasswordInput.value;
@@ -45,7 +35,6 @@ confirmPasswordInput.setCustomValidity('As senhas não coincidem');
 confirmPasswordInput.setCustomValidity('');
 }
 });
-// Validar email ao sair do campo
 emailCadastroInput.addEventListener('blur', () => {
 const email = emailCadastroInput.value.trim();
 if (email && !Validator.validateEmail(email)) {
@@ -55,7 +44,6 @@ showMessage('E-mail inválido', 'error');
 emailCadastroInput.setCustomValidity('');
 }
 });
-// Validar CPF ao sair do campo
 cpfInput.addEventListener('blur', () => {
 const cpf = cpfInput.value.trim();
 if (cpf && !Validator.validateCPF(cpf)) {
@@ -65,7 +53,6 @@ showMessage('CPF inválido', 'error');
 cpfInput.setCustomValidity('');
 }
 });
-// ========== SUBMIT DO FORMULÁRIO DE CADASTRO ==========
 cadastroForm.addEventListener('submit', async (e) => {
 e.preventDefault();
 const nome = nomeInput.value.trim();
@@ -74,7 +61,6 @@ const cpf = cpfInput.value.trim();
 const password = passwordCadastroInput.value;
 const confirmPassword = confirmPasswordInput.value;
 const termsAccepted = termsCheckbox.checked;
-// ===== VALIDAÇÕES =====
 if (!nome || !email || !cpf || !password || !confirmPassword) {
 showMessage('Por favor, preencha todos os campos', 'error');
 return;
@@ -103,13 +89,13 @@ if (!termsAccepted) {
 showMessage('Você deve aceitar os termos de uso', 'error');
 return;
 }
-// Desabilitar botão durante o processo
+
 const submitBtn = cadastroForm.querySelector('button[type="submit"]');
 const originalText = submitBtn.textContent;
 submitBtn.disabled = true;
 submitBtn.textContent = 'Criando conta...';
 try {
-// Chamada à API Mock
+
 const response = await API_MOCK.cadastrar(nome, email, password, cpf);
 if (response.success) {
 showMessage(response.message + ' Redirecionando para login...', 'success');

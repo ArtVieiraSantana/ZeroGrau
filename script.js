@@ -1,4 +1,3 @@
-// ==================== PRODUTOS MOCK ==================== 
 const products = [
     { id: 1, name: 'Jaqueta Gelada', description: 'Jaqueta streetwear com design minimalista', price: 199.90, image: 'images/Gemini_Generated_Image_ntcvsnntcvsnntcv.png' },
     { id: 2, name: 'Calça Frost', description: 'Calça com acabamento premium', price: 149.90, image: 'images/Gemini_Generated_Image_43m23s43m23s43m2.png' },
@@ -9,8 +8,7 @@ const products = [
     { id: 7, name: 'Luva Polar', description: 'Luva impermeável e aquecida', price: 89.90, image: 'images/Gemini_Generated_Image_jmac9yjmac9yjmac.png' },
     { id: 8, name: 'Cachecol Branco', description: 'Cachecol de lã pura', price: 99.90, image: 'images/Gemini_Generated_Image_is5u78is5u78is5u.png' },
 ];
-
-// ==================== CARRINHO DE COMPRAS ==================== 
+ 
 let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
 function saveCart() {
@@ -108,8 +106,7 @@ function renderProducts() {
         </div>
     `).join('');
 }
-
-// ==================== MODAL DE LOGIN ==================== 
+ 
 function openLogin(e) {
     e.preventDefault();
     document.getElementById('loginModal').classList.remove('hidden');
@@ -140,13 +137,11 @@ function handleLogin(e) {
         return;
     }
 
-    // Validação básica
     if (password.length < 6) {
         showNotification('Senha deve ter no mínimo 6 caracteres', 'error');
         return;
     }
 
-    // Simular login
     localStorage.setItem('user', JSON.stringify({ email, name: email.split('@')[0] }));
     showNotification('Login realizado com sucesso!');
     closeModal();
@@ -161,7 +156,6 @@ function handleSignup(e) {
     const password = document.getElementById('signupPassword').value;
     const passwordConfirm = document.getElementById('signupPasswordConfirm').value;
 
-    // Validações
     if (!name || !email || !cpf || !password || !passwordConfirm) {
         showNotification('Por favor, preencha todos os campos', 'error');
         return;
@@ -187,7 +181,6 @@ function handleSignup(e) {
         return;
     }
 
-    // Simular cadastro
     localStorage.setItem('user', JSON.stringify({ name, email, cpf }));
     showNotification('Cadastro realizado com sucesso!');
     closeSignupModal();
@@ -220,8 +213,7 @@ function logout() {
     showNotification('Logout realizado com sucesso!');
     updateLoginButton();
 }
-
-// ==================== VALIDAÇÕES ==================== 
+ 
 function validateEmail(email) {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return re.test(email);
@@ -253,8 +245,7 @@ function validateCPF(cpf) {
     
     return true;
 }
-
-// ==================== API DE CEP ==================== 
+ 
 function formatCEP(cep) {
     cep = cep.replace(/\D/g, '');
     if (cep.length > 5) {
@@ -285,7 +276,6 @@ async function fetchCEP() {
         cepResult.textContent = 'Buscando...';
         cepResult.className = 'cep-result';
         
-        // Usando a API ViaCEP (gratuita e sem autenticação)
         const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
         const data = await response.json();
 
@@ -309,8 +299,7 @@ async function fetchCEP() {
         console.error('Erro:', error);
     }
 }
-
-// ==================== SEÇÃO DE PAGAMENTO ==================== 
+ 
 function goToPayment() {
     if (cart.length === 0) {
         showNotification('Seu carrinho está vazio', 'error');
@@ -334,7 +323,6 @@ function processPayment() {
     const state = document.getElementById('state').value;
     const paymentMethod = document.getElementById('paymentMethod').value;
 
-    // Validações
     if (!fullName || !email || !address || !city || !state || !paymentMethod) {
         showNotification('Por favor, preencha todos os campos', 'error');
         return;
@@ -345,7 +333,6 @@ function processPayment() {
         return;
     }
 
-    // Validar campos de cartão se selecionado
     if (paymentMethod === 'credit' || paymentMethod === 'debit') {
         const cardNumber = document.getElementById('cardNumber').value;
         const cardExpiry = document.getElementById('cardExpiry').value;
@@ -367,19 +354,16 @@ function processPayment() {
         }
     }
 
-    // Simular processamento de pagamento
     simulatePayment(fullName, email);
 }
 
 function simulatePayment(fullName, email) {
-    // Simular processamento
     const success = Math.random() > 0.1; // 90% de chance de sucesso
 
     if (success) {
         const orderNumber = 'ORD-' + Date.now();
         const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0) + 15;
 
-        // Salvar pedido
         const order = {
             orderNumber,
             customer: fullName,
@@ -394,15 +378,12 @@ function simulatePayment(fullName, email) {
 
         showNotification(`✓ Pagamento aprovado! Número do pedido: ${orderNumber}`);
         
-        // Enviar email simulado
         console.log(`Email de confirmação enviado para: ${email}`);
         
-        // Limpar carrinho
         cart = [];
         saveCart();
         updateCart();
 
-        // Resetar formulário
         document.getElementById('fullName').value = '';
         document.getElementById('paymentEmail').value = '';
         document.getElementById('address').value = '';
@@ -414,15 +395,13 @@ function simulatePayment(fullName, email) {
         document.getElementById('cardCVV').value = '';
         document.getElementById('cepInput').value = '';
 
-        // Voltar para o topo
         document.getElementById('payment').classList.add('hidden');
         window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
         showNotification('✗ Erro no pagamento. Tente novamente.', 'error');
     }
 }
-
-// ==================== FORMULÁRIO DE CONTATO ==================== 
+ 
 function sendContact(e) {
     e.preventDefault();
     
@@ -443,26 +422,22 @@ function sendContact(e) {
         return;
     }
 
-    // Simular envio
     console.log('Mensagem enviada:', { name, email, message });
     
     feedback.textContent = '✓ Mensagem enviada com sucesso! Entraremos em contato em breve.';
     feedback.className = 'feedback success';
 
-    // Limpar formulário
     document.getElementById('contactName').value = '';
     document.getElementById('contactEmail').value = '';
     document.getElementById('contactMessage').value = '';
 
-    // Esconder feedback após 5 segundos
     setTimeout(() => {
         feedback.className = 'feedback hidden';
     }, 5000);
 }
-
-// ==================== NOTIFICAÇÕES ==================== 
+ 
 function showNotification(message, type = 'success') {
-    // Criar elemento de notificação
+
     const notification = document.createElement('div');
     notification.style.cssText = `
         position: fixed;
@@ -480,27 +455,23 @@ function showNotification(message, type = 'success') {
     notification.textContent = message;
     document.body.appendChild(notification);
 
-    // Remover após 3 segundos
     setTimeout(() => {
         notification.style.animation = 'fadeOut 0.3s ease';
         setTimeout(() => notification.remove(), 300);
     }, 3000);
 }
-
-// ==================== MENU MOBILE ==================== 
+ 
 document.getElementById('menuToggle').addEventListener('click', function() {
     const mobileMenu = document.getElementById('mobileMenu');
     mobileMenu.classList.toggle('active');
 });
 
-// Fechar menu ao clicar em um link
 document.querySelectorAll('.mobile-nav-link').forEach(link => {
     link.addEventListener('click', function() {
         document.getElementById('mobileMenu').classList.remove('active');
     });
 });
-
-// ==================== NAVEGAÇÃO ATIVA ==================== 
+ 
 window.addEventListener('scroll', function() {
     const sections = document.querySelectorAll('section[id]');
     const navLinks = document.querySelectorAll('.nav-link');
@@ -520,8 +491,7 @@ window.addEventListener('scroll', function() {
         }
     });
 });
-
-// ==================== MOSTRAR/OCULTAR CAMPOS DE CARTÃO ==================== 
+ 
 document.getElementById('paymentMethod').addEventListener('change', function() {
     const cardFields = document.getElementById('cardFields');
     if (this.value === 'credit' || this.value === 'debit') {
@@ -530,8 +500,7 @@ document.getElementById('paymentMethod').addEventListener('change', function() {
         cardFields.classList.add('hidden');
     }
 });
-
-// ==================== FORMATAÇÃO DE ENTRADA ==================== 
+ 
 document.getElementById('cardNumber').addEventListener('input', function() {
     let value = this.value.replace(/\D/g, '');
     let formatted = value.match(/.{1,4}/g)?.join(' ') || value;
@@ -566,14 +535,12 @@ if (signupCPFElement) {
         this.value = value;
     });
 }
-
-// ==================== INICIALIZAÇÃO ==================== 
+ 
 document.addEventListener('DOMContentLoaded', function() {
     renderProducts();
     updateCart();
     updateLoginButton();
 
-    // Fechar modal ao clicar fora
     window.addEventListener('click', function(event) {
         const loginModal = document.getElementById('loginModal');
         const signupModal = document.getElementById('signupModal');
@@ -586,7 +553,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Adicionar listener ao botão de login
     const loginBtn = document.querySelector('.btn-login');
     loginBtn.addEventListener('click', function(e) {
         e.preventDefault();
